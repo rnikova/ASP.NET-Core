@@ -6,7 +6,6 @@ namespace Stopify.Data.Models
     {
         public StopifyUser()
         {
-
         }
 
         public string FullName { get; set; }

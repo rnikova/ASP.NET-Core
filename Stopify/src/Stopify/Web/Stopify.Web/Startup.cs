@@ -8,10 +8,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Stopify.Data;
 using Stopify.Data.Models;
 using System.Linq;
+using Stopify.Services;
 using System.Globalization;
-using CloudinaryDotNet;
+using Stopify.Web.InputModels;
 using System.Reflection;
-using System.Threading.Tasks;
+using Stopify.Services.Models;
 
 namespace Stopify.Web
 {
@@ -47,6 +48,8 @@ namespace Stopify.Web
                 options.User.RequireUniqueEmail = true;
             });
 
+            services.AddTransient<IProductService, ProductService>();
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -79,6 +82,10 @@ namespace Stopify.Web
 
             app.UseMvc(routes =>
             {
+                routes.MapRoute(
+                    name: "areas",
+                    template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+
                 routes.MapRoute(
                     name: "default",
                     template: "{controller=Home}/{action=Index}/{id?}");

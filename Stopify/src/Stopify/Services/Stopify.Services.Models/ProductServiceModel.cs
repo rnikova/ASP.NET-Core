@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Stopify.Data.Models
+namespace Stopify.Services.Models
 {
-    public class Product
+    public class ProductServiceModel
     {
         public string Id { get; set; }
 
@@ -10,7 +10,7 @@ namespace Stopify.Data.Models
 
         public int ProductTypeId { get; set; }
 
-        public ProductType ProductType { get; set; }
+        public ProductTypeServiceModel ProductType { get; set; }
 
         public decimal Price { get; set; }
 
