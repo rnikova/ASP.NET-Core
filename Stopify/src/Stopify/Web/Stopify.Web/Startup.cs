@@ -13,6 +13,7 @@ using System.Globalization;
 using Stopify.Web.InputModels;
 using System.Reflection;
 using Stopify.Services.Models;
+using CloudinaryDotNet;
 
 namespace Stopify.Web
 {
@@ -35,6 +36,15 @@ namespace Stopify.Web
                 .AddEntityFrameworkStores<StopifyDbContext>()
                 .AddDefaultTokenProviders();
 
+            Account cloudinaryCredentials = new Account(
+                this.Configuration["Cloudinary:CloudName"],
+                this.Configuration["Cloudinary:ApiKey"],
+                this.Configuration["Cloudinary:ApiSecret"]);
+
+            Cloudinary cloudinaryUtility = new Cloudinary(cloudinaryCredentials);
+
+            services.AddSingleton(cloudinaryUtility);
+
             services.Configure<IdentityOptions>(options =>
             {
                 // Password settings.
@@ -49,12 +59,16 @@ namespace Stopify.Web
             });
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<ICloudinaryService, CloudinaryService>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
+            CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
+
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
                 using (var context = serviceScope.ServiceProvider.GetRequiredService<StopifyDbContext>())

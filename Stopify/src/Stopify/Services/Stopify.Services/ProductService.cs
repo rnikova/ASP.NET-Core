@@ -17,11 +17,15 @@ namespace Stopify.Services
 
         public async Task<bool> Create(ProductServiceModel productServiceModel)
         {
+            var productTypeFromDb = context.ProductTypes.SingleOrDefault(p => p.Name == productServiceModel.ProductType.Name);
+
             Product product = new Product
             {
                 Name = productServiceModel.Name,
                 Price = productServiceModel.Price,
-                ManufacturedOn = productServiceModel.ManufacturedOn
+                ManufacturedOn = productServiceModel.ManufacturedOn,
+                ProductType = productTypeFromDb,
+                Picture = productServiceModel.Picture
             };
 
             context.Products.Add(product);

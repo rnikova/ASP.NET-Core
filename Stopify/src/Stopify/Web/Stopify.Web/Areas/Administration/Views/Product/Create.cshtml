@@ -8,7 +8,8 @@
 }
 
 <h1 class="bg-primary text-white font-weight-bold text-center p-3 w-60 mx-auto rounded">Create Product</h1>
-<form method="post" class="form border-primary-4 rounded p-3 w-60 mx-auto mt-3">
+<form method="post" class="form border-primary-4 rounded p-3 w-60 mx-auto mt-3" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly"></div>
     <div id="name-and-price-holder" class="d-flex justify-content-between">
         <div class="form-group mx-auto w-45">
             <div class="d-flex justify-content-center">
@@ -20,6 +21,7 @@
                    placeholder="Name..."
                    asp-for="Name">
         </div>
+        <span asp-validation-for="Name" class="text-danger"></span>
         <div class="form-group mx-auto w-45">
             <div class="d-flex justify-content-center">
                 <label asp-for="Price" class="text-primary h5">Price</label>
@@ -31,6 +33,7 @@
                    placeholder="Price..."
                    asp-for="Price">
         </div>
+        <span asp-validation-for="Price" class="text-danger"></span>
     </div>
     <div id="date-and-picture-holder" class="d-flex justify-content-between">
         <div class="form-group mx-auto w-45">
@@ -43,6 +46,7 @@
                    placeholder="Manufactured On..."
                    asp-for="ManufacturedOn">
         </div>
+        <span asp-validation-for="ManufacturedOn" class="text-danger"></span>
         <div class="form-group mx-auto w-45">
             <div class="d-flex justify-content-center">
                 <label asp-for="Picture" class="text-primary h5">Picture</label>
@@ -53,6 +57,7 @@
                    placeholder="Picture Link..."
                    asp-for="Picture">
         </div>
+        <span asp-validation-for="Picture" class="text-danger"></span>
     </div>
     <hr class="hr-2 bg-primary mt-4">
     <div class="form-group mx-auto w-45">
@@ -67,6 +72,7 @@
             }
         </select>
     </div>
+    <span asp-validation-for="ProductType" class="text-danger"></span>
     <hr class="hr-2 bg-primary mt-4">
     <div class="d-flex justify-content-center mt-3">
         <button class="btn btn-primary font-weight-bold">Create Product</button>
