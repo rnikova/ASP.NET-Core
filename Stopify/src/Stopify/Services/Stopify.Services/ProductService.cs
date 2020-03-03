@@ -1,4 +1,5 @@
-﻿using Stopify.Data;
+﻿using AspNetCoreTemplate.Services.Mapping;
+using Stopify.Data;
 using Stopify.Data.Models;
 using Stopify.Services.Models;
 using System.Linq;
@@ -19,14 +20,8 @@ namespace Stopify.Services
         {
             var productTypeFromDb = context.ProductTypes.SingleOrDefault(p => p.Name == productServiceModel.ProductType.Name);
 
-            Product product = new Product
-            {
-                Name = productServiceModel.Name,
-                Price = productServiceModel.Price,
-                ManufacturedOn = productServiceModel.ManufacturedOn,
-                ProductType = productTypeFromDb,
-                Picture = productServiceModel.Picture
-            };
+            Product product = AutoMapper.Mapper.Map<Product>(productServiceModel);
+            product.ProductType = productTypeFromDb;
 
             context.Products.Add(product);
             int result = await context.SaveChangesAsync();
@@ -47,14 +42,14 @@ namespace Stopify.Services
             return result > 0;
         }
 
-        public async Task<IQueryable<ProductTypeServiceModel>> GetAllProductTypes()
+        public IQueryable<ProductServiceModel> GetAllProducts()
         {
-            return this.context.ProductTypes
-                .Select(productType => new ProductTypeServiceModel
-                {
-                    Id = productType.Id,
-                    Name = productType.Name
-                });
+            return this.context.Products.To<ProductServiceModel>();
+        }
+
+        public IQueryable<ProductTypeServiceModel> GetAllProductTypes()
+        {
+            return this.context.ProductTypes.To<ProductTypeServiceModel>();
         }
     }
 }

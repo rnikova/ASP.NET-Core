@@ -5,6 +5,7 @@ using Stopify.Web.InputModels;
 using System.Threading.Tasks;
 using System.Linq;
 using Stopify.Web.ViewModels;
+using System.Data.Entity;
 
 namespace Stopify.Web.Areas.Administration.Controllers
 {
@@ -41,7 +42,7 @@ namespace Stopify.Web.Areas.Administration.Controllers
         [HttpGet(Name = "Create")]
         public async Task<IActionResult> Create()
         {
-            var allProductTypes = await this.productService.GetAllProductTypes();
+            var allProductTypes = await this.productService.GetAllProductTypes().ToListAsync();
 
             this.ViewData["types"] = allProductTypes.Select(productType => new ProductCreateProductTypeViewModel
             {
@@ -57,7 +58,7 @@ namespace Stopify.Web.Areas.Administration.Controllers
         {
             if (!this.ModelState.IsValid)
             {
-                var allProductTypes = await this.productService.GetAllProductTypes();
+                var allProductTypes = await this.productService.GetAllProductTypes().ToListAsync();
 
                 this.ViewData["types"] = allProductTypes.Select(productType => new ProductCreateProductTypeViewModel
                 {
@@ -72,17 +73,8 @@ namespace Stopify.Web.Areas.Administration.Controllers
                 productCreateInputModel.Picture,
                 productCreateInputModel.Name);
 
-            ProductServiceModel productServiceModel = new ProductServiceModel
-            {
-                Name = productCreateInputModel.Name,
-                Price = productCreateInputModel.Price,
-                ManufacturedOn = productCreateInputModel.ManufacturedOn,
-                ProductType = new ProductTypeServiceModel
-                {
-                    Name = productCreateInputModel.ProductType
-                },
-                Picture = pictureUrl
-            };
+            ProductServiceModel productServiceModel = AutoMapper.Mapper.Map<ProductServiceModel>(productCreateInputModel);
+            productServiceModel.Picture = pictureUrl;
 
             await this.productService.Create(productServiceModel);
 

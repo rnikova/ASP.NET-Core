@@ -14,6 +14,8 @@ using Stopify.Web.InputModels;
 using System.Reflection;
 using Stopify.Services.Models;
 using CloudinaryDotNet;
+using Stopify.Services.Mapping;
+using Stopify.Web.ViewModels.Home.Index;
 
 namespace Stopify.Web
 {
@@ -66,6 +68,11 @@ namespace Stopify.Web
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            AutoMapperConfig.RegisterMappings(
+                typeof(ProductCreateInputModel).GetTypeInfo().Assembly,
+                typeof(ProductHomeViewModel).GetTypeInfo().Assembly,
+                typeof(ProductServiceModel).GetTypeInfo().Assembly);
+
             CultureInfo.DefaultThreadCurrentCulture = CultureInfo.InvariantCulture;
             CultureInfo.DefaultThreadCurrentUICulture = CultureInfo.InvariantCulture;
 
