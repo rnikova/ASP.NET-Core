@@ -14,6 +14,6 @@ namespace Stopify.Services
 
         Task<bool> CreateProductType(ProductTypeServiceModel productTypeServiceModel);
 
-
+        ProductServiceModel GetById(string id);
     }
 }

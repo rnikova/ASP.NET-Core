@@ -61,7 +61,10 @@ namespace Stopify.Web
             });
 
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderService, OrderService>();
             services.AddTransient<ICloudinaryService, CloudinaryService>();
+
+            services.AddTransient(typeof(UserManager<StopifyUser>));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
@@ -86,6 +89,21 @@ namespace Stopify.Web
                     {
                         context.Roles.Add(new IdentityRole { Name = "Admin", NormalizedName = "ADMIN" });
                         context.Roles.Add(new IdentityRole { Name = "User", NormalizedName = "USER" });
+
+                        context.SaveChanges();
+                    }
+
+                    if (!context.OrderStatuses.Any())
+                    {
+                        context.OrderStatuses.Add(new OrderStatus
+                        {
+                            Name = "Active"
+                        });
+
+                        context.OrderStatuses.Add(new OrderStatus
+                        {
+                            Name = "Completed"
+                        });
 
                         context.SaveChanges();
                     }
